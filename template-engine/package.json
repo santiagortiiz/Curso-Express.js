@@ -1,0 +1,16 @@
+{
+  "dependencies": {
+    "express": "^4.17.1"
+  },
+  "name": "template-engine",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index",
+    "dev": "nodemon index"
+  },
+  "keywords": [],
+  "author": "Santiago",
+  "license": "ISC",
+  "description": ""
+}
