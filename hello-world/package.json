@@ -1,0 +1,14 @@
+{
+  "name": "hellow-world",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon index.js"
+  },
+  "author": "Santiago",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
