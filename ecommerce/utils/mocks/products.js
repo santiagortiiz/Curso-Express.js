@@ -1,11 +1,4 @@
-const express = require("express")
-const router = express.Router()
-
-router.get('/', function(req, res, next) {
-    res.render("products", { products })    // Inject to the view engine
-})
-
-const products = [
+const productMocks = [
     {
         name: "Red shoes",
         price: 75,
@@ -18,4 +11,4 @@ const products = [
     }
 ]
 
-module.exports = router
+module.exports = productMocks
