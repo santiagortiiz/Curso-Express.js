@@ -16,13 +16,15 @@ app.set("view engine", "pug")
 app.use("/static", express.static(path.join(__dirname, "public")))
 
 /* Routes to the views*/
-app.use('/', function(req, res) {
-    res.redirect('/products')
-})
 app.use('/products', productsRouter)            
 
 /* Routes to the APIs */
 app.use('/api/products', productsApiRouter)     
+
+/* Routes redirection */
+app.use('/', function(req, res) {
+    res.redirect('/products')
+})
 
 /* Server */
 // app.listen retorna un servidor

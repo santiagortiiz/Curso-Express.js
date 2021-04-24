@@ -6,7 +6,7 @@ const ProductService = new ProductsService()
 
 router.get('/', async function(req, res, next) {
     const { tags } = req.query
-
+    
     try {
         const products = await ProductService.getProducts({ tags })
     
@@ -16,6 +16,7 @@ router.get('/', async function(req, res, next) {
         }
         res.status(200).send(data)
     } catch (err) {
+        console.log(err)
         next(err)
     }
 })
