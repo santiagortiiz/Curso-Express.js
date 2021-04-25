@@ -38,12 +38,12 @@ router.get('/:productId', async function(req, res, next) {
 })
 
 router.post('/', async function(req, res, next) {
-    const { product } = req.body
-
+    const { body: product } = req
+    console.log(product)
     try {
-        const createdProduct = await ProductService.createProduct({ product })
+        const createdProductId = await ProductService.createProduct({ product })
         data = {
-            data: createdProduct,
+            data: createdProductId,
             message: 'product posted'
         }
         res.status(201).send(data)
@@ -52,13 +52,12 @@ router.post('/', async function(req, res, next) {
     }
 })
 
-router.put('/', async function(req, res, next) {
+router.put('/:productId', async function(req, res, next) {
     const { productId } = req.params
-    const { body: updateInfo } = req        // Destructure: body as updateInfo
+    const { body: product } = req        // Destructure: body as updateInfo
     
     try {
-        const updatedProduct = await ProductService.updateProduct({ productId, updateInfo })
-    
+        const updatedProduct = await ProductService.updateProduct({ productId, product })
         data = {
             data: updatedProduct,
             message: 'products updated'
