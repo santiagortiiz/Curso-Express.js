@@ -2,7 +2,12 @@ const express = require("express")
 const router = express.Router()
 const ProductsService = require("../../services/products")
 const ProductService = new ProductsService()
-
+const validation = require("../../utils/middlewares/validationHandler")
+const { 
+    productIdSchema, 
+    productTagSchema, 
+    createProductSchema, 
+    updateProductSchema } = require("../../utils/schemas/products")
 
 router.get('/', async function(req, res, next) {
     const { tags } = req.query
@@ -21,7 +26,7 @@ router.get('/', async function(req, res, next) {
     }
 })
 
-router.get('/:productId', async function(req, res, next) {
+router.get('/:productId', validation(productIdSchema, "params"), async function(req, res, next) {
     const { productId } = req.params
 
     try {
@@ -37,7 +42,7 @@ router.get('/:productId', async function(req, res, next) {
     }
 })
 
-router.post('/', async function(req, res, next) {
+router.post('/', validation(createProductSchema), async function(req, res, next) {
     const { body: product } = req
     console.log(product)
     try {
@@ -52,7 +57,10 @@ router.post('/', async function(req, res, next) {
     }
 })
 
-router.put('/:productId', async function(req, res, next) {
+router.put('/:productId', 
+    validation(productIdSchema, "params"), 
+    validation(updateProductSchema), 
+    async function(req, res, next) {
     const { productId } = req.params
     const { body: product } = req        // Destructure: body as updateInfo
     
@@ -68,9 +76,8 @@ router.put('/:productId', async function(req, res, next) {
     }
 })
 
-router.delete('/:productId', async function(req, res, next) {
+router.delete('/:productId', validation(productIdSchema), async function(req, res, next) {
     const { productId } = req.params
-
     try {
         const deletedProduct = await ProductService.deleteProduct({ productId })
         data = {
