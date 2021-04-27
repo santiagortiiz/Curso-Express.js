@@ -2,6 +2,7 @@ const express = require("express")
 const path = require("path")
 const boom = require("boom")
 const productsRouter = require("./routes/views/products")
+const authApiRouter = require("./routes/api/auth")
 const productsApiRouter = require("./routes/api/products")
 const { 
     logErrors, 
@@ -28,6 +29,7 @@ app.use("/static", express.static(path.join(__dirname, "public")))
 app.use('/products', productsRouter)            
 
 /* Routes to the APIs */
+app.use('/api/auth', authApiRouter)
 app.use('/api/products', productsApiRouter)     
 
 /* Redirection routes */

@@ -1,5 +1,6 @@
 const express = require("express")
 const router = express.Router()
+const passport = require("passport")
 const ProductsService = require("../../services/products")
 const ProductService = new ProductsService()
 const validation = require("../../utils/middlewares/validationHandler")
@@ -8,6 +9,9 @@ const {
     productTagSchema, 
     createProductSchema, 
     updateProductSchema } = require("../../utils/schemas/products")
+
+/* JWT strategy */
+require("../../utils/auth/strategies/jwt")
 
 router.get('/', async function(req, res, next) {
     const { tags } = req.query
@@ -58,6 +62,7 @@ router.post('/', validation(createProductSchema), async function(req, res, next)
 })
 
 router.put('/:productId', 
+    passport.authenticate("jwt", { session: false }),
     validation(productIdSchema, "params"), 
     validation(updateProductSchema), 
     async function(req, res, next) {
@@ -76,7 +81,9 @@ router.put('/:productId',
     }
 })
 
-router.delete('/:productId', validation(productIdSchema), async function(req, res, next) {
+router.delete('/:productId', 
+    passport.authenticate("jwt", { session: false }),
+    validation(productIdSchema), async function(req, res, next) {
     const { productId } = req.params
     try {
         const deletedProduct = await ProductService.deleteProduct({ productId })
