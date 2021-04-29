@@ -14,6 +14,7 @@ passport.use(
       const mongoDB = new MongoLib()
 
       try {
+        // Extracts the sub (username) from the token and looks for it into the DB
         const [user] = await mongoDB.getAll("users", {
           username: tokenPayload.sub
         });

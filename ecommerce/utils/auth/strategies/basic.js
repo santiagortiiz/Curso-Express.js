@@ -9,12 +9,14 @@ passport.use(
     const mongoDB = new MongoLib()
 
     try {
+      // Verify the existence of the user in the DB.
       const [user] = await mongoDB.getAll("users", { username })
 
       if (!user) {
         return cb(boom.unauthorized(), false)
       }
 
+      // Compares the password encoded in the database with the password entered.
       if (!(await bcrypt.compare(password, user.password))) {
         return cb(boom.unauthorized(), false)
       }

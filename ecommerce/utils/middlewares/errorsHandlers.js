@@ -1,7 +1,9 @@
+const debug = require("debug")("app:error")
 const { config } = require("../../config/index")
 const boom = require("boom")
 const isRequestAjaxOrApi = require("../isRequestAjaxOrApi.js");
 
+// Verify if the environment is development and return the stack of the error
 function withErrorStack(err, stack) {
     if (config.dev) {
         return { ...err, stack}   // Object.assign({}, err, stack)
@@ -9,10 +11,11 @@ function withErrorStack(err, stack) {
 }
 
 function logErrors(err, req, res, next) {
-    console.log(err.stack)
+    debug(err.stack)
     next(err)
 }
 
+// Verify if the error is already wrapped to boom
 function wrapErrors(err, req, res, next) {
     if (!err.isBoom) {
         next(boom.badImplementation(err));

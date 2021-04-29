@@ -1,3 +1,4 @@
+const debug = require("debug")("app:server")
 const express = require("express")
 const path = require("path")
 const boom = require("boom")
@@ -30,7 +31,7 @@ app.use('/products', productsRouter)
 
 /* Routes to the APIs */
 app.use('/api/auth', authApiRouter)
-app.use('/api/products', productsApiRouter)     
+productsApiRouter(app)  // app.use('/api/products', productsApiRouter)     
 
 /* Redirection routes */
 app.use('/', function(req, res) {
@@ -42,7 +43,7 @@ app.use(function(req, res, next) {
     if (isRequestAjaxOrApi(req)) {
         const {
             output: { statusCode, payload }
-        } = boom.notFound()
+        } = boom.notFound()     // Instance boom object
         res.status(statusCode).json(payload)
     }
     res.status(404).render("404")
@@ -57,5 +58,6 @@ app.use(errorHandler)
 /* Server */
 // app.listen retorna un servidor
 const server = app.listen(8000, function() {
-    console.log(`listening http://localhost:${server.address().port}`)
+    debug(`listening http://localhost:${server.address().port}`)  
+    // console.log(`listening http://localhost:${server.address().port}`)
 })
