@@ -1,3 +1,5 @@
+const { config } = require("./config/index")
+const helmet = require("helmet")
 const debug = require("debug")("app:server")
 const express = require("express")
 const path = require("path")
@@ -17,7 +19,11 @@ const isRequestAjaxOrApi = require("./utils/isRequestAjaxOrApi")
 /* App */
 const app = express()
 
-/* Middlewares */
+/*** Middlewares ***/
+// Security Manage
+app.use(helmet())
+
+// Request Manage
 app.use(express.json())             
 app.use(express.urlencoded({ extended: false }))
 
@@ -58,6 +64,9 @@ app.use(errorHandler)
 /* Server */
 // app.listen retorna un servidor
 const server = app.listen(8000, function() {
-    debug(`listening http://localhost:${server.address().port}`)  
-    // console.log(`listening http://localhost:${server.address().port}`)
+    if (config.dev){
+        console.log(`listening http://localhost:${server.address().port}`)
+    } else {
+        debug(`listening http://localhost:${server.address().port}`) 
+    }
 })

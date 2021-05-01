@@ -3,6 +3,8 @@ const passport = require("passport")
 const ProductsService = require("../../services/products")
 const ProductService = new ProductsService()
 const validation = require("../../utils/middlewares/validationHandler")
+const cacheResponse = require("../../utils/cacheResponse")
+const { FIVE_MINUTES_IN_SECONDS, SIXTY_MINUTES_IN_SECONDS } = require("../../utils/time")
 const { 
     productIdSchema, 
     productTagSchema, 
@@ -14,11 +16,11 @@ require("../../utils/auth/strategies/jwt")
 
 function productsApi(app) {
     const router = express.Router()
-    app.use("api/products", router)
+    app.use("/api/products", router)
 
     router.get('/', async function(req, res, next) {
+        cacheResponse(res, FIVE_MINUTES_IN_SECONDS)
         const { tags } = req.query
-        
         try {
             const products = await ProductService.getProducts({ tags })
         
@@ -34,6 +36,7 @@ function productsApi(app) {
     })
 
     router.get('/:productId', validation(productIdSchema, "params"), async function(req, res, next) {
+        cacheResponse(res, SIXTY_MINUTES_IN_SECONDS)
         const { productId } = req.params
 
         try {
@@ -99,6 +102,5 @@ function productsApi(app) {
             next(err)
         }
     })
-
 }
 module.exports = productsApi
